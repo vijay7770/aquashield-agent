@@ -1,0 +1,86 @@
+[
+  {
+    "order_id": "ORD-2025-0841",
+    "supplier_id": "SUP-001",
+    "item": "Liquid Chlorine",
+    "quantity": 5000,
+    "unit": "gallons",
+    "expected_delivery": "2025-08-15",
+    "status": "pending",
+    "priority": "HIGH",
+    "treatment_plant": "Plant A — Main Filtration",
+    "notes": "Routine bi-weekly resupply. Current stock estimated at 18 days."
+  },
+  {
+    "order_id": "ORD-2025-0842",
+    "supplier_id": "SUP-001",
+    "item": "Liquid Chlorine",
+    "quantity": 5000,
+    "unit": "gallons",
+    "expected_delivery": "2025-08-29",
+    "status": "pending",
+    "priority": "HIGH",
+    "treatment_plant": "Plant A — Main Filtration",
+    "notes": "Follow-on order after ORD-2025-0841."
+  },
+  {
+    "order_id": "ORD-2025-0797",
+    "supplier_id": "SUP-002",
+    "item": "Sodium Fluoride",
+    "quantity": 2000,
+    "unit": "lbs",
+    "expected_delivery": "2025-08-20",
+    "status": "pending",
+    "priority": "MEDIUM",
+    "treatment_plant": "Plant A & B — Fluoridation",
+    "notes": "Monthly fluoridation chemical order."
+  },
+  {
+    "order_id": "ORD-2025-0803",
+    "supplier_id": "SUP-003",
+    "item": "Alum / Coagulants",
+    "quantity": 20000,
+    "unit": "lbs",
+    "expected_delivery": "2025-08-18",
+    "status": "pending",
+    "priority": "MEDIUM",
+    "treatment_plant": "Plant B — Coagulation Basin",
+    "notes": "Quarterly coagulant bulk order. Adequate buffer stock currently on hand."
+  },
+  {
+    "order_id": "ORD-2025-0765",
+    "supplier_id": "SUP-004",
+    "item": "Centrifugal Pumps (4-inch)",
+    "quantity": 3,
+    "unit": "units",
+    "expected_delivery": "2025-09-05",
+    "status": "pending",
+    "priority": "LOW",
+    "treatment_plant": "Plant C — Booster Station",
+    "notes": "Planned replacement of aging pump units. Non-urgent scheduled maintenance."
+  },
+  {
+    "order_id": "ORD-2025-0778",
+    "supplier_id": "SUP-004",
+    "item": "Actuated Ball Valves",
+    "quantity": 12,
+    "unit": "units",
+    "expected_delivery": "2025-09-10",
+    "status": "pending",
+    "priority": "LOW",
+    "treatment_plant": "Distribution Network — Zone 3",
+    "notes": "Valve replacement as part of annual maintenance cycle."
+  },
+  {
+    "order_id": "ORD-2025-0811",
+    "supplier_id": "SUP-005",
+    "item": "Turbidity Sensors",
+    "quantity": 6,
+    "unit": "units",
+    "expected_delivery": "2025-09-20",
+    "status": "pending",
+    "priority": "MEDIUM",
+    "treatment_plant": "Plants A, B, C — Quality Monitoring",
+    "notes": "Sensor replacement for 3 monitoring stations. 21-day lead time expected."
+  }
+]

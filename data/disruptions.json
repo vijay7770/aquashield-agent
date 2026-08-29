@@ -1,0 +1,35 @@
+[
+  {
+    "disruption_id": "DIS-2024-0012",
+    "supplier_id": "SUP-001",
+    "description": "Logistics strike at distribution hub delayed shipments",
+    "reported_date": "2024-11-04",
+    "resolved_date": "2024-11-16",
+    "actual_delay_days": 12,
+    "criticality": "CRITICAL",
+    "resolution": "Emergency order placed with SUP-006 (Apex Chlorine Backup). Cost premium 18%. No treatment interruption.",
+    "lessons_learned": "Maintain minimum 21-day chlorine stock buffer during Q4 logistics peak season."
+  },
+  {
+    "disruption_id": "DIS-2024-0007",
+    "supplier_id": "SUP-003",
+    "description": "Port congestion delayed coagulant shipment from overseas supplier",
+    "reported_date": "2024-07-22",
+    "resolved_date": "2024-07-29",
+    "actual_delay_days": 7,
+    "criticality": "MEDIUM",
+    "resolution": "Existing buffer stock was sufficient. No backup order required.",
+    "lessons_learned": "30-day buffer stock policy for coagulants is appropriate."
+  },
+  {
+    "disruption_id": "DIS-2025-0003",
+    "supplier_id": "SUP-001",
+    "description": "Supplier plant maintenance shutdown reduced output by 40%",
+    "reported_date": "2025-02-10",
+    "resolved_date": "2025-02-18",
+    "actual_delay_days": 8,
+    "criticality": "HIGH",
+    "resolution": "Partial order fulfilled by SUP-006. SUP-001 resumed full capacity after maintenance completion.",
+    "lessons_learned": "Request advance notice of planned maintenance windows from SUP-001 for better planning."
+  }
+]

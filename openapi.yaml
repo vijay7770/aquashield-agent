@@ -1,0 +1,120 @@
+openapi: 3.0.3
+info:
+  title: AquaShield Supply Chain Disruption API
+  description: >
+    AquaShield API for analyzing supply chain disruptions and generating
+    AI-powered mitigation plans. Given a supplier disruption, the API identifies
+    affected orders, assesses criticality, finds alternative suppliers, and
+    returns a complete action plan with AI risk assessment.
+  version: 1.0.0
+
+servers:
+  - url: https://aquashield-agent.2e2mqn500xa7.us-south.codeengine.appdomain.cloud
+    description: IBM Code Engine deployment
+
+paths:
+  /api/disruption:
+    post:
+      operationId: runDisruptionResponse
+      summary: Analyze a supply chain disruption and generate a mitigation plan
+      description: >
+        Given a supplier disruption, this skill identifies affected orders,
+        assesses criticality, finds alternative suppliers, and returns a
+        complete action plan with AI risk assessment.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - supplier_id
+                - description
+                - delay_days
+              properties:
+                supplier_id:
+                  type: string
+                  description: The ID of the disrupted supplier (e.g. SUP-001)
+                  example: SUP-001
+                description:
+                  type: string
+                  description: Natural language description of the disruption
+                  example: Factory fire has shut down primary production line
+                delay_days:
+                  type: integer
+                  description: Number of days the supplier will be delayed
+                  example: 14
+      responses:
+        '200':
+          description: Successful disruption analysis and mitigation plan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  summary:
+                    type: string
+                    description: High-level summary of the disruption analysis
+                  affected_orders:
+                    type: array
+                    description: List of orders affected by the disruption
+                    items:
+                      type: object
+                  criticality_assessment:
+                    type: object
+                    description: Assessment of the disruption criticality
+                    properties:
+                      level:
+                        type: string
+                        description: Criticality level (e.g. LOW, MEDIUM, HIGH, CRITICAL)
+                      reason:
+                        type: string
+                        description: Explanation of the criticality level
+                  alternatives:
+                    type: array
+                    description: List of alternative suppliers identified
+                    items:
+                      type: object
+                  action_plan:
+                    type: object
+                    description: Recommended action plan to mitigate the disruption
+                    properties:
+                      immediate_actions:
+                        type: array
+                        description: List of immediate actions to take
+                        items:
+                          type: string
+                      recommended_supplier:
+                        type: string
+                        description: ID or name of the recommended alternative supplier
+                  ai_risk_assessment:
+                    type: string
+                    description: AI-generated risk assessment narrative
+                  executive_summary:
+                    type: string
+                    description: Executive-level summary suitable for stakeholder communication
+                  execution_time_seconds:
+                    type: number
+                    description: Time taken to process the request, in seconds
+                  processed_at:
+                    type: string
+                    format: date-time
+                    description: ISO 8601 timestamp of when the request was processed
+        '400':
+          description: Bad request — missing or invalid input parameters
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string

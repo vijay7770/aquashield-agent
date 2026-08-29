@@ -86,7 +86,7 @@ __pycache__/
 venv/
 env/
 ENV/
-.venv
+.venv/
 
 # Java
 *.class
@@ -118,3 +118,10 @@ build/
 # DO NOT REMOVE ABOVE PATTERNS
 # Add project-specific patterns below
 # ============================================
+# Temporary/test scripts - not for commit
+test_watsonx.py
+list_models.py
+
+# Bob AI session live files (keep folder, ignore live session content)
+bob-sessions/*
+!bob-sessions/.gitkeep

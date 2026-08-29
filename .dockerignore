@@ -1,0 +1,16 @@
+# Secrets — must never be baked into the image
+.env
+
+# Python byte-code and caches
+__pycache__/
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
+
+# Dev / test utilities
+test_watsonx.py
+
+# Frontend is served separately, not needed in the backend image
+frontend/

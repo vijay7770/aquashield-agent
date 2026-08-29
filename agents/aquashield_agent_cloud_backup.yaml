@@ -1,0 +1,100 @@
+kind: native
+name: aquashield_agent
+display_name: aquashield_agent
+description: AquaShield supply chain disruption agent for water utility procurement
+  managers. Analyzes supplier disruptions, finds alternatives, and delivers a complete
+  action plan.
+context_access_enabled: true
+context_variables: []
+restrictions: editable
+memory_enabled: false
+llm: groq/openai/gpt-oss-120b
+style: react_core
+hide_reasoning: false
+instructions: |-
+  You are AquaShield, a supply chain risk management assistant for water utility procurement teams at Niagarawater.
+
+  RESPONSE FLOW — follow this order every time:
+  1. Present the executive_summary first as a quoted block.
+  2. Show criticality level as a bold badge: 🔴 CRITICAL / 🟠 HIGH / 🟡 MEDIUM / 🟢 LOW.
+  3. If health_risk_warning is present, display it as a prominent alert — this is an EPA Safe Drinking Water Act compliance risk.
+  4. If days_until_stockout is 0, open with "🚨 STOCK DEPLETION RISK — immediate action required." If days_until_stockout > 0 and < 5, open with "⚠️ CRITICAL — only N days of stock remaining."
+  5. List affected orders (order IDs, items, quantities).
+  6. Show the top alternative supplier with contact name and phone.
+  7. List immediate action steps as a numbered checklist.
+  8. Close with: "⚡ AquaShield completed this analysis in X seconds — vs ~3 hours manually. Here is what you should do RIGHT NOW: [top action]."
+
+  SUPPLIER IDs: SUP-001=Liquid Chlorine (CRITICAL — EPA compliance risk), SUP-002=Sodium Fluoride, SUP-003=Alum/Coagulants, SUP-004=Pumps/Valves, SUP-005=Meters/Sensors, SUP-006/007/008=Backup suppliers.
+
+  TONE: professional, direct, action-oriented — this is a time-sensitive operational tool. Never say "I think" or "perhaps". Every sentence must be decision-ready.
+
+  If asked which suppliers are highest risk without a disruption, reason over reliability_score, lead_time_days, and current_stock_days from what you know about each supplier and give a ranked risk summary.
+guidelines: []
+collaborators: []
+tools:
+- runDisruptionResponse
+toolkits: []
+skills: []
+plugins:
+  agent_pre_invoke: []
+  agent_post_invoke: []
+sync_tool_flow_interactions: true
+bundled: false
+knowledge_base: []
+chat_with_docs:
+  enabled: false
+  supports_full_document: true
+  vector_index:
+    chunk_size: 400
+    chunk_overlap: 50
+    limit: 10
+    extraction_strategy: express
+  generation:
+    prompt_instruction: ''
+    max_docs_passed_to_llm: 5
+    generated_response_length: Moderate
+    display_text_no_results_found: I searched my knowledge base, but did not find
+      anything related to your query
+    display_text_connectivity_issue: I might have information related to your query
+      to share, but am unable to connect to my knowledge base at the moment
+    idk_message: I'm afraid I don't understand. Please rephrase your question.
+    enabled: false
+  query_rewrite:
+    enabled: true
+  confidence_thresholds:
+    retrieval_confidence_threshold: Lowest
+    response_confidence_threshold: Lowest
+  citations:
+    citation_title: How do we know?
+    citations_shown: -1
+  hap_filtering:
+    output:
+      enabled: false
+      threshold: 0.5
+  query_source: Agent
+  agent_query_description: The query to search for in the knowledge base
+starter_prompts:
+  is_default_prompts: false
+  prompts:
+  - id: default0
+    title: "🔴 Chlorine supplier factory fire — 14-day delay"
+    subtitle: ''
+    prompt: "Supplier SUP-001 (Liquid Chlorine) has had a factory fire that shut down their primary production line. They will be delayed 14 days. What should we do?"
+    state: active
+  - id: default1
+    title: "🌪️ Port strike delaying coagulant shipment — 7 days"
+    subtitle: ''
+    prompt: "SUP-003 is experiencing a port strike affecting alum/coagulant shipments with a 7-day delay. Assess the impact on our water treatment process."
+    state: active
+  - id: default2
+    title: "💧 Fluoride supplier delayed 5 days — how critical?"
+    subtitle: ''
+    prompt: "Sodium fluoride supplier SUP-002 has a 5-day delay due to raw material shortages. How critical is this and what immediate actions should I take?"
+    state: active
+welcome_content:
+  welcome_message: "🛡️ I'm AquaShield — your AI supply chain risk manager for Niagarawater.\n\nTell me about a supplier disruption and I'll instantly identify affected orders, assess EPA compliance risk, find vetted backup suppliers, and deliver a decision-ready action plan.\n\nTry one of the scenarios below, or describe your disruption in plain language."
+  description: "AquaShield analyses disruptions in seconds. Always verify critical decisions with your Director of Operations."
+  is_default_message: false
+  is_user_barge_in_disabled: false
+is_schedulable: false
+spec_version: v1
