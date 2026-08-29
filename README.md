@@ -4,7 +4,15 @@
 
 Built for the **IBM TechXchange 2026 Hackathon** using **IBM Bob** as the primary development tool.
 
-🔗 **[Live Demo](https://vijay7770.github.io/aquashield-agent/)**
+🔗 **[Live Demo](https://vijay7770.github.io/aquashield-agent/)** &nbsp;|&nbsp; 🎬 **[Watch Demo Video](https://youtu.be/ConS4-98Saw)**
+
+---
+
+## 🎬 Demo Video
+
+[![Watch the AquaShield Demo](https://img.shields.io/badge/▶%20Watch%20Demo%20Video-AquaShield%20%7C%20IBM%20TechXchange%202026-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/ConS4-98Saw)
+
+> One sentence in. Decision-ready plan out. Watch AquaShield turn a chlorine supplier strike into a 60-second AI action brief — live in watsonx Orchestrate.
 
 ---
 
