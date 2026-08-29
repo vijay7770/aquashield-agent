@@ -41,6 +41,21 @@ def _load_json(filename: str) -> list:
         return []
 
 
+@app.route("/", methods=["GET"])
+def root():
+    return jsonify({
+        "service": "AquaShield Supply Chain API",
+        "status": "ok",
+        "docs": "https://vijay7770.github.io/aquashield-agent/",
+        "endpoints": [
+            "GET  /api/status",
+            "GET  /api/suppliers",
+            "GET  /api/orders",
+            "POST /api/disruption",
+        ],
+    })
+
+
 @app.route("/api/status", methods=["GET"])
 def status():
     suppliers = _load_json("suppliers.json")

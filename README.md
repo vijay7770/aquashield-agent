@@ -4,7 +4,7 @@
 
 Built for the **IBM TechXchange 2026 Hackathon** using **IBM Bob** as the primary development tool.
 
-🔗 **[Live Demo](https://aquashield-agent.2e2mqn500xa7.us-south.codeengine.appdomain.cloud)** &nbsp;|&nbsp; 💬 **[Chat with AquaShield](https://vijay7770.github.io/aquashield-agent/docs/demo.html)**
+🔗 **[Live Demo](https://vijay7770.github.io/aquashield-agent/)** &nbsp;|&nbsp; 💬 **[Chat with AquaShield](https://vijay7770.github.io/aquashield-agent/)**
 
 ---
 
