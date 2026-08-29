@@ -282,6 +282,52 @@
     footer a:hover { text-decoration: underline; }
     footer strong { color: var(--gray-100); }
 
+    /* ── SECTION NAV ── */
+    .section-nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-20);
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .section-nav::-webkit-scrollbar { display: none; }
+    .section-nav ul {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      max-width: var(--max-w);
+      gap: 0;
+    }
+    .section-nav li a {
+      display: block;
+      padding: 0.65rem 1rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--gray-70);
+      text-decoration: none;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .section-nav li a:hover { color: var(--blue); border-bottom-color: var(--blue); }
+    .section-nav li a.active { color: var(--blue); border-bottom-color: var(--blue); }
+    .section-nav li.nav-cta a {
+      margin-left: auto;
+      color: var(--white);
+      background: var(--blue);
+      border-radius: 4px;
+      padding: 0.4rem 1rem;
+      border-bottom: none;
+    }
+    .section-nav li.nav-cta a:hover { background: var(--blue-dark); color: var(--white); border-bottom: none; }
+    @media (max-width: 700px) {
+      .section-nav li a { padding: 0.6rem 0.7rem; font-size: 0.72rem; }
+    }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 700px) {
       .ps-grid { grid-template-columns: 1fr; }
@@ -311,6 +357,20 @@
   </div>
 </header>
 
+<!-- SECTION NAV -->
+<nav class="section-nav" id="section-nav">
+  <ul>
+    <li><a href="#problem-solution">🔴 Problem</a></li>
+    <li><a href="#architecture">⚙️ Architecture</a></li>
+    <li><a href="#capabilities">🎯 Capabilities</a></li>
+    <li><a href="#suppliers">📊 Risk Dashboard</a></li>
+    <li><a href="#prompts">💬 Try Prompts</a></li>
+    <li><a href="#proactive">🔮 Proactive Alerts</a></li>
+    <li><a href="#stack">🤖 Tech Stack</a></li>
+    <li class="nav-cta"><a href="https://github.com/vijay7770/aquashield-agent" target="_blank">GitHub →</a></li>
+  </ul>
+</nav>
+
 <!-- CHAT CALLOUT -->
 <div class="chat-callout">
   💬 Chat with AquaShield live — <span class="arrow-hint">click the blue button in the bottom-right corner →</span>
@@ -331,7 +391,7 @@
 <div class="page">
 
   <!-- 1. PROBLEM / SOLUTION -->
-  <div class="ps-grid" style="margin-top:0.5rem">
+  <div id="problem-solution" class="ps-grid" style="margin-top:0.5rem">
     <div class="ps-card problem">
       <div class="ps-label">🔴 The Problem</div>
       <h3>100,000 people's drinking water. One delayed shipment. Every minute counts.</h3>
@@ -597,6 +657,31 @@
         });
     });
   });
+</script>
+
+<!-- NAV SCROLL SPY -->
+<script>
+(function() {
+  var ids = ['problem-solution','architecture','capabilities','suppliers','prompts','proactive','stack'];
+  var links = {};
+  ids.forEach(function(id) {
+    var a = document.querySelector('.section-nav a[href="#' + id + '"]');
+    if (a) links[id] = a;
+  });
+  if (!('IntersectionObserver' in window)) return;
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        Object.values(links).forEach(function(a) { a.classList.remove('active'); });
+        if (links[e.target.id]) links[e.target.id].classList.add('active');
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px', threshold: 0 });
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+})();
 </script>
 
 <!-- STATUS BAR + SUPPLIER RISK TABLE -->

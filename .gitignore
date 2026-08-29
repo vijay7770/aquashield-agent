@@ -125,3 +125,7 @@ list_models.py
 # Bob AI session live files (keep folder, ignore live session content)
 bob-sessions/*
 !bob-sessions/.gitkeep
+# Large video files
+*.mp4
+*.mov
+*.avi

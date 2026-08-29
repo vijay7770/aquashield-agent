@@ -127,7 +127,7 @@ CODE_ENGINE_URL      # Deployed Code Engine URL (used by disruption_tool.py)
 | `data/suppliers.json` | 8 suppliers with reliability scores, stock levels, backup IDs |
 | `data/orders.json` | 7 open purchase orders |
 | `data/disruptions.json` | Historical disruption records with lessons learned |
-| `docs/demo.html` | Live demo page with embedded Orchestrate chat widget |
+| `demo/index.html` | Live demo page with embedded Orchestrate chat widget |
 
 ---
 
