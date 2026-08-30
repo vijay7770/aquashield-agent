@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AquaShield — AI Supply Chain Resilience</title>
+  <style>
+    :root {
+      --blue:      #0f62fe;
+      --blue-dark: #0043ce;
+      --blue-lt:   #edf5ff;
+      --teal:      #007d79;
+      --teal-lt:   #d9fbfb;
+      --gray-100:  #161616;
+      --gray-70:   #525252;
+      --gray-50:   #8d8d8d;
+      --gray-20:   #dde1e6;
+      --gray-10:   #f2f4f8;
+      --white:     #ffffff;
+      --red:       #da1e28;
+      --red-lt:    #fff1f1;
+      --amber:     #f1620a;
+      --amber-lt:  #fff2e8;
+      --green:     #198038;
+      --green-lt:  #defbe6;
+      --radius:    8px;
+      --shadow:    0 2px 12px rgba(0,0,0,0.07);
+      --max-w:     960px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      background: #f4f6fa;
+      color: var(--gray-100);
+      line-height: 1.55;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-20);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 54px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+
+    .header-left { display: flex; align-items: center; gap: 10px; }
+    .shield-mark { font-size: 1.5rem; line-height: 1; }
+    .brand-name  { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; }
+    .brand-sub   { font-size: 0.65rem; color: var(--gray-50); letter-spacing: 0.07em; text-transform: uppercase; }
+    .header-right { display: flex; align-items: center; gap: 8px; }
+
+    .bob-badge {
+      display: flex; align-items: center; gap: 5px;
+      background: var(--blue); color: #fff;
+      font-size: 0.72rem; font-weight: 700;
+      padding: 5px 13px; border-radius: 20px; letter-spacing: 0.03em;
+    }
+
+    .live-badge {
+      display: flex; align-items: center; gap: 5px;
+      border: 1px solid var(--green); color: var(--green);
+      font-size: 0.7rem; font-weight: 700;
+      padding: 4px 11px; border-radius: 20px;
+    }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 2s ease infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+    /* ── CHAT CALLOUT BANNER ── */
+    .chat-callout {
+      background: linear-gradient(90deg, var(--blue) 0%, #0043ce 100%);
+      color: #fff;
+      padding: 0.75rem 2rem;
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+    }
+
+    .chat-callout .arrow-hint {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(255,255,255,0.2);
+      padding: 3px 10px; border-radius: 20px;
+      font-size: 0.78rem;
+      animation: nudge 2s ease infinite;
+    }
+
+    @keyframes nudge { 0%,100%{transform:translateX(0)} 50%{transform:translateX(4px)} }
+
+    /* ── PAGE WRAPPER ── */
+    .page { max-width: var(--max-w); margin: 0 auto; padding: 2rem 1.5rem 3rem; }
+
+    /* ── SECTION UTILS ── */
+    .eyebrow {
+      font-size: 0.66rem; font-weight: 700; letter-spacing: 0.13em;
+      text-transform: uppercase; color: var(--blue); margin-bottom: 6px;
+    }
+    .section-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 1.1rem; letter-spacing: -0.01em; }
+    .divider { border: none; border-top: 1px solid var(--gray-20); margin: 2.5rem 0; }
+    section { margin-bottom: 0; }
+
+    /* ── PROBLEM / SOLUTION ── */
+    .ps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+
+    .ps-card {
+      border-radius: var(--radius);
+      padding: 1.4rem 1.5rem;
+      box-shadow: var(--shadow);
+    }
+    .ps-card.problem { background: var(--red-lt); border: 1px solid #ffd7d9; border-top: 3px solid var(--red); }
+    .ps-card.solution { background: var(--teal-lt); border: 1px solid #9ef0f0; border-top: 3px solid var(--teal); }
+
+    .ps-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 7px; }
+    .ps-card.problem .ps-label { color: var(--red); }
+    .ps-card.solution .ps-label { color: var(--teal); }
+    .ps-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 9px; line-height: 1.3; }
+    .ps-card p { font-size: 0.83rem; color: var(--gray-70); line-height: 1.65; }
+    .ps-card p strong { color: var(--gray-100); }
+
+    /* ── PROJECT INTRO ── */
+    .project-intro {
+      background: var(--white); border: 1px solid var(--gray-20);
+      border-radius: var(--radius); padding: 1.4rem 1.5rem;
+      box-shadow: var(--shadow);
+      display: flex; align-items: flex-start; gap: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+    .project-icon { font-size: 2.8rem; line-height: 1; flex-shrink: 0; }
+    .project-details h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 3px; letter-spacing: -0.02em; }
+    .project-details .proj-sub { font-size: 0.82rem; color: var(--gray-70); margin-bottom: 12px; line-height: 1.5; }
+
+    .chips { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .chip { font-size: 0.72rem; font-weight: 600; padding: 4px 11px; border-radius: 4px; border: 1px solid; display: inline-flex; align-items: center; gap: 4px; }
+    .chip.bob   { background: var(--blue); color: #fff; border-color: var(--blue); font-size: 0.76rem; }
+    .chip.blue  { background: var(--blue-lt); color: var(--blue-dark); border-color: #c0d6ff; }
+    .chip.teal  { background: var(--teal-lt); color: var(--teal); border-color: #9ef0f0; }
+    .chip.plain { background: var(--gray-10); color: var(--gray-70); border-color: var(--gray-20); }
+
+    /* ── ARCHITECTURE ── */
+    .arch-flow {
+      display: flex; align-items: center; gap: 4px;
+      margin-bottom: 1.1rem; overflow-x: auto; padding-bottom: 4px;
+    }
+
+    .arch-node {
+      background: var(--white); border: 1px solid var(--gray-20);
+      border-radius: var(--radius); padding: 0.75rem 0.9rem;
+      text-align: center; flex: 1; min-width: 110px;
+      box-shadow: var(--shadow); transition: border-color 0.15s, transform 0.15s;
+    }
+    .arch-node:hover { border-color: var(--blue); transform: translateY(-2px); }
+    .arch-node.hl { border-color: var(--blue); background: var(--blue-lt); }
+    .arch-node .an-icon { font-size: 1.3rem; margin-bottom: 4px; }
+    .arch-node .an-name { font-size: 0.75rem; font-weight: 700; margin-bottom: 2px; }
+    .arch-node.hl .an-name { color: var(--blue-dark); }
+    .arch-node .an-desc { font-size: 0.64rem; color: var(--gray-50); line-height: 1.3; }
+    .arch-arrow { color: var(--blue); font-size: 1rem; flex-shrink: 0; }
+
+    .arch-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; }
+    .arch-card {
+      background: var(--white); border: 1px solid var(--gray-20);
+      border-left: 3px solid var(--blue); border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 1rem 1.1rem; box-shadow: var(--shadow);
+    }
+    .arch-card.teal { border-left-color: var(--teal); }
+    .arch-card.gray { border-left-color: var(--gray-50); }
+    .arch-card.bob-c { border-left-color: var(--blue); background: var(--blue-lt); }
+    .arch-card h4 { font-size: 0.82rem; font-weight: 700; margin-bottom: 5px; }
+    .arch-card p { font-size: 0.77rem; color: var(--gray-70); line-height: 1.5; }
+    .arch-card code { font-family: monospace; font-size: 0.7rem; color: var(--blue); background: rgba(15,98,254,0.08); padding: 1px 4px; border-radius: 3px; }
+
+    /* ── CAPABILITIES ── */
+    .caps-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.75rem; }
+    .cap { background: var(--white); border: 1px solid var(--gray-20); border-radius: var(--radius); padding: 1.1rem; box-shadow: var(--shadow); transition: border-color 0.15s; }
+    .cap:hover { border-color: var(--blue); }
+    .cap .cap-icon { font-size: 1.4rem; margin-bottom: 7px; }
+    .cap h4 { font-size: 0.83rem; font-weight: 700; margin-bottom: 5px; }
+    .cap p { font-size: 0.77rem; color: var(--gray-70); line-height: 1.5; }
+
+    /* ── PROMPTS ── */
+    .prompts-list { display: flex; flex-direction: column; gap: 0.55rem; }
+    .prompt-row {
+      background: var(--white); border: 1px solid var(--gray-20);
+      border-radius: var(--radius); padding: 0.85rem 1rem;
+      display: flex; align-items: flex-start; gap: 0.8rem;
+      box-shadow: var(--shadow); transition: border-color 0.15s;
+    }
+    .prompt-row:hover { border-color: var(--blue); }
+    .pr-num { width: 24px; height: 24px; border-radius: 50%; background: var(--blue); color: #fff; font-size: 0.7rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .pr-body { flex: 1; }
+    .pr-cat { font-size: 0.64rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue); margin-bottom: 3px; }
+    .pr-text { font-size: 0.83rem; color: var(--gray-100); line-height: 1.45; }
+    .pr-copy { background: transparent; border: 1px solid var(--gray-20); color: var(--gray-50); border-radius: 4px; padding: 4px 10px; font-size: 0.7rem; font-weight: 600; cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: background 0.15s, color 0.15s, border-color 0.15s; }
+    .pr-copy:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .pr-copy.ok { background: var(--green); color: #fff; border-color: var(--green); }
+
+    /* ── STATUS BAR ── */
+    .status-bar {
+      background: var(--white); border: 1px solid var(--gray-20);
+      border-radius: var(--radius); padding: 0.7rem 1.1rem;
+      display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;
+      box-shadow: var(--shadow); margin-bottom: 1.5rem; font-size: 0.78rem;
+    }
+    .status-bar .sb-label { font-weight: 700; color: var(--gray-70); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.07em; flex-shrink: 0; }
+    .status-item { display: flex; align-items: center; gap: 5px; }
+    .status-item .dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .dot-green  { background: var(--green); }
+    .dot-red    { background: var(--red); }
+    .dot-amber  { background: var(--amber); }
+    .dot-gray   { background: var(--gray-50); }
+    .status-item span { color: var(--gray-70); }
+    .status-item strong { color: var(--gray-100); }
+
+    /* ── SUPPLIER RISK TABLE ── */
+    .risk-table-wrap { overflow-x: auto; margin-bottom: 0.5rem; }
+    .risk-table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+    .risk-table th { background: var(--gray-10); border-bottom: 2px solid var(--gray-20); padding: 7px 10px; text-align: left; font-weight: 700; font-size: 0.69rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--gray-70); white-space: nowrap; }
+    .risk-table td { border-bottom: 1px solid var(--gray-20); padding: 8px 10px; vertical-align: middle; }
+    .risk-table tr:last-child td { border-bottom: none; }
+    .risk-table tr:hover td { background: var(--gray-10); }
+    .risk-badge { display: inline-block; font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .risk-badge.critical { background: var(--red-lt); color: var(--red); border: 1px solid #ffd7d9; }
+    .risk-badge.high     { background: var(--amber-lt); color: var(--amber); border: 1px solid #ffd6c2; }
+    .risk-badge.medium   { background: #fdf6e3; color: #8a5c00; border: 1px solid #ffe99a; }
+    .risk-badge.low      { background: var(--green-lt); color: var(--green); border: 1px solid #9ef0f0; }
+    .stock-bar-wrap { display: flex; align-items: center; gap: 6px; }
+    .stock-bar { height: 6px; border-radius: 3px; flex-shrink: 0; min-width: 4px; }
+    .stock-bar.danger  { background: var(--red); }
+    .stock-bar.warning { background: var(--amber); }
+    .stock-bar.ok      { background: var(--green); }
+    .stock-bar-bg { width: 80px; height: 6px; background: var(--gray-20); border-radius: 3px; overflow: hidden; }
+    .stock-days-label { font-size: 0.72rem; color: var(--gray-70); white-space: nowrap; }
+
+    /* ── SEVERITY SCALE ── */
+    .severity-scale {
+      background: var(--white); border: 1px solid var(--gray-20);
+      border-radius: var(--radius); padding: 1rem 1.2rem;
+      margin-bottom: 1rem; box-shadow: var(--shadow);
+    }
+    .sev-label { font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.09em; color: var(--gray-50); margin-bottom: 0.6rem; }
+    .sev-track { display: flex; align-items: stretch; border-radius: 4px; overflow: hidden; height: 28px; }
+    .sev-seg { flex: 1; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.04em; color: #fff; }
+    .sev-seg.low      { background: var(--green); }
+    .sev-seg.medium   { background: #d4a017; }
+    .sev-seg.high     { background: var(--amber); }
+    .sev-seg.critical { background: var(--red); }
+    .sev-prompts { display: flex; margin-top: 0.5rem; }
+    .sev-pin { flex: 1; text-align: center; font-size: 0.62rem; color: var(--gray-50); padding: 0 2px; }
+
+    /* ── PROACTIVE ALERTS ── */
+    .proactive-grid { display: flex; flex-direction: column; gap: 0.5rem; }
+    .proactive-alert {
+      display: flex; align-items: flex-start; gap: 0.8rem;
+      background: var(--white); border: 1px solid var(--gray-20);
+      border-radius: var(--radius); padding: 0.85rem 1rem;
+      box-shadow: var(--shadow);
+    }
+    .proactive-alert.warn  { border-left: 3px solid var(--amber); }
+    .proactive-alert.info  { border-left: 3px solid var(--blue); }
+    .pa-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+    .pa-body .pa-title { font-size: 0.82rem; font-weight: 700; margin-bottom: 3px; }
+    .pa-body .pa-detail { font-size: 0.77rem; color: var(--gray-70); line-height: 1.5; }
+
+    /* ── TECH STACK ── */
+    .tech-wrap { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+    /* ── FOOTER ── */
+    footer { background: var(--white); border-top: 1px solid var(--gray-20); padding: 1.1rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: 0.76rem; color: var(--gray-50); }
+    footer a { color: var(--blue); text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+    footer strong { color: var(--gray-100); }
+
+    /* ── SECTION NAV ── */
+    .section-nav {
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-20);
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .section-nav::-webkit-scrollbar { display: none; }
+    .section-nav ul {
+      display: flex;
+      align-items: center;
+      list-style: none;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      max-width: var(--max-w);
+      gap: 0;
+    }
+    .section-nav li a {
+      display: block;
+      padding: 0.65rem 1rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--gray-70);
+      text-decoration: none;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .section-nav li a:hover { color: var(--blue); border-bottom-color: var(--blue); }
+    .section-nav li a.active { color: var(--blue); border-bottom-color: var(--blue); }
+    .section-nav li.nav-cta a {
+      margin-left: auto;
+      color: var(--white);
+      background: var(--blue);
+      border-radius: 4px;
+      padding: 0.4rem 1rem;
+      border-bottom: none;
+    }
+    .section-nav li.nav-cta a:hover { background: var(--blue-dark); color: var(--white); border-bottom: none; }
+    @media (max-width: 700px) {
+      .section-nav li a { padding: 0.6rem 0.7rem; font-size: 0.72rem; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 700px) {
+      .ps-grid { grid-template-columns: 1fr; }
+      .arch-cards { grid-template-columns: 1fr; }
+      .caps-grid { grid-template-columns: 1fr 1fr; }
+      .project-intro { flex-direction: column; }
+    }
+    @media (max-width: 480px) {
+      .caps-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-left">
+    <div class="shield-mark">🛡️</div>
+    <div>
+      <div class="brand-name">AquaShield</div>
+      <div class="brand-sub">Supply Chain Intelligence</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <span class="bob-badge">🤖 Built with IBM Bob</span>
+    <span class="live-badge"><span class="live-dot"></span>Live Demo</span>
+  </div>
+</header>
+
+<!-- SECTION NAV -->
+<nav class="section-nav" id="section-nav">
+  <ul>
+    <li><a href="#problem-solution">🔴 Problem</a></li>
+    <li><a href="#architecture">⚙️ Architecture</a></li>
+    <li><a href="#capabilities">🎯 Capabilities</a></li>
+    <li><a href="#suppliers">📊 Risk Dashboard</a></li>
+    <li><a href="#prompts">💬 Try Prompts</a></li>
+    <li><a href="#proactive">🔮 Proactive Alerts</a></li>
+    <li><a href="#stack">🤖 Tech Stack</a></li>
+    <li><a href="https://youtu.be/ConS4-98Saw" target="_blank">🎬 Demo Video</a></li>
+    <li class="nav-cta"><a href="https://github.com/vijay7770/aquashield-agent" target="_blank">GitHub →</a></li>
+  </ul>
+</nav>
+
+<!-- CHAT CALLOUT -->
+<div class="chat-callout">
+  💬 Chat with AquaShield live — <span class="arrow-hint">click the blue button in the bottom-right corner →</span>
+</div>
+
+<!-- LIVE STATUS BAR -->
+<div class="page" style="padding-bottom:0;padding-top:1rem">
+  <div class="status-bar" id="status-bar">
+    <span class="sb-label">System Status</span>
+    <div class="status-item"><div class="dot dot-gray" id="dot-api"></div><strong id="lbl-api">Checking API…</strong></div>
+    <div class="status-item"><div class="dot dot-gray" id="dot-sup"></div><span id="lbl-sup">—</span></div>
+    <div class="status-item"><div class="dot dot-gray" id="dot-ord"></div><span id="lbl-ord">—</span></div>
+    <div class="status-item"><div class="dot dot-gray" id="dot-crit"></div><span id="lbl-crit">—</span></div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="page">
+
+  <!-- 1. PROBLEM / SOLUTION -->
+  <div id="problem-solution" class="ps-grid" style="margin-top:0.5rem">
+    <div class="ps-card problem">
+      <div class="ps-label">🔴 The Problem</div>
+      <h3>100,000 people's drinking water. One delayed shipment. Every minute counts.</h3>
+      <p>Water utilities like Niagarawater depend on critical chemical suppliers — chlorine, fluoride, coagulants — for EPA Safe Drinking Water Act compliance. When a supplier delays, procurement teams spend <strong>hours manually calling backups, checking spreadsheets, and drafting emails</strong> — while the stock countdown clock ticks.</p>
+    </div>
+    <div class="ps-card solution">
+      <div class="ps-label">🟢 The Solution — AquaShield</div>
+      <h3>One sentence in. Decision-ready plan out. Under 60 seconds.</h3>
+      <p>An AI agent that accepts a single natural-language disruption report, then automatically: identifies affected orders, assesses EPA compliance risk, ranks alternative suppliers, and delivers a decision-ready mitigation plan — <strong>in under 60 seconds instead of 3 hours.</strong></p>
+    </div>
+  </div>
+
+  <!-- 2. PROJECT + PRIMARY TOOL -->
+  <div class="project-intro">
+    <div class="project-icon">🛡️</div>
+    <div class="project-details">
+      <h2>AquaShield</h2>
+      <div class="proj-sub">AI-Powered Supply Chain Disruption Response Agent · IBM TechXchange 2026 Hackathon</div>
+      <div class="chips">
+        <span style="font-size:0.72rem;color:var(--gray-50);font-weight:500">Primary tool:</span>
+        <span class="chip bob">🤖 IBM Bob v2.0.3</span>
+        <span class="chip blue">watsonx Orchestrate</span>
+        <span class="chip teal">IBM Code Engine</span>
+        <span class="chip plain">watsonx.ai Granite</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider"/>
+
+  <!-- 3. SYSTEM ARCHITECTURE -->
+  <section id="architecture" style="margin-bottom:2.5rem">
+    <div class="eyebrow">System Architecture</div>
+    <div class="section-title">How AquaShield Works</div>
+
+    <div class="arch-flow">
+      <div class="arch-node">
+        <div class="an-icon">👤</div>
+        <div class="an-name">Procurement Manager</div>
+        <div class="an-desc">Reports disruption in plain language</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node hl">
+        <div class="an-icon">🤖</div>
+        <div class="an-name">IBM Bob</div>
+        <div class="an-desc">Built & connected everything via MCP</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="an-icon">🎼</div>
+        <div class="an-name">watsonx Orchestrate</div>
+        <div class="an-desc">Parses intent, calls disruption tool</div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="an-icon">⚙️</div>
+        <div class="an-name">Code Engine API</div>
+        <div class="an-desc">Flask <code style="font-size:0.63rem;color:#0043ce">/api/disruption</code></div>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="an-icon">🧠</div>
+        <div class="an-name">watsonx.ai Granite</div>
+        <div class="an-desc">Generates risk assessment & plan</div>
+      </div>
+    </div>
+
+    <div class="arch-cards">
+      <div class="arch-card bob-c">
+        <h4>🤖 IBM Bob — Primary Development Tool</h4>
+        <p>Bob wrote every source file in this repo, connected watsonx Orchestrate via MCP directly from VS Code, deployed the tool to Code Engine, and created this demo page — all through conversational prompts. <strong>Built end-to-end in under 8 hours.</strong></p>
+      </div>
+      <div class="arch-card teal">
+        <h4>⚙️ IBM Code Engine</h4>
+        <p>Serverless containerised Flask backend. Exposes the OpenAPI 3.0 <code>/api/disruption</code> endpoint consumed as a watsonx Orchestrate skill. Includes criticality scoring, EPA compliance alerts, and historical pattern analysis.</p>
+      </div>
+      <div class="arch-card gray">
+        <h4>🎼 watsonx Orchestrate</h4>
+        <p>Native agent that parses disruption intent, calls <code>runDisruptionResponse</code>, and returns a structured, decision-ready response — including stockout countdown and AI risk narrative from IBM Granite.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- 4. CORE CAPABILITIES -->
+  <section id="capabilities" style="margin-bottom:2.5rem">
+    <div class="eyebrow">Core Capabilities</div>
+    <div class="section-title">What AquaShield Delivers</div>
+    <div class="caps-grid">
+      <div class="cap"><div class="cap-icon">⚡</div><h4>Instant Disruption Analysis</h4><p>Identifies all affected orders and open purchase lines linked to a disrupted supplier in milliseconds.</p></div>
+      <div class="cap"><div class="cap-icon">🎯</div><h4>Criticality Scoring</h4><p>Rates disruptions LOW / MEDIUM / HIGH / CRITICAL based on chemical type, stock levels vs delay, and treatment schedules.</p></div>
+      <div class="cap"><div class="cap-icon">🔄</div><h4>Alternative Supplier Matching</h4><p>Searches vetted backup suppliers ranked by reliability score, capacity, and lead time — with direct contact details.</p></div>
+      <div class="cap"><div class="cap-icon">🧠</div><h4>AI Risk Assessment</h4><p>IBM Granite generates a supplier-specific risk narrative using live disruption data <em>and</em> historical disruption patterns.</p></div>
+      <div class="cap"><div class="cap-icon">📝</div><h4>Executive Summary</h4><p>Auto-generates a director-level paragraph ready for email escalation or incident reports — in seconds.</p></div>
+      <div class="cap"><div class="cap-icon">🛡️</div><h4>EPA Compliance Risk Alerts</h4><p>Automatically flags when chlorine or fluoride stock depletion risks triggering EPA Safe Drinking Water Act reporting obligations — with days-to-breach countdown.</p></div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- 4b. LIVE SUPPLIER RISK TABLE -->
+  <section id="suppliers" style="margin-bottom:2.5rem">
+    <div class="eyebrow">Live Data</div>
+    <div class="section-title">Supplier Risk Dashboard</div>
+    <p style="font-size:0.83rem;color:var(--gray-70);margin-bottom:1rem;">Real-time view of your supply base — stock levels vs lead times. Red = disruption today means stockout before resupply.</p>
+    <div class="risk-table-wrap">
+      <table class="risk-table" id="supplier-table">
+        <thead>
+          <tr>
+            <th>Supplier</th>
+            <th>Chemical / Category</th>
+            <th>Stock Level</th>
+            <th>Lead Time</th>
+            <th>Reliability</th>
+            <th>Risk</th>
+          </tr>
+        </thead>
+        <tbody id="supplier-tbody">
+          <tr><td colspan="6" style="text-align:center;color:var(--gray-50);padding:1.5rem">Loading supplier data…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- 5. EXAMPLE PROMPTS -->
+  <section id="prompts" style="margin-bottom:2.5rem">
+    <div class="eyebrow">Try It Now</div>
+    <div class="section-title">5 Example Prompts to Get Started</div>
+    <p style="font-size:0.83rem;color:var(--gray-70);margin-bottom:1rem;">Copy any prompt → paste it into the AquaShield chat (blue button, bottom-right)</p>
+
+    <!-- Severity scale -->
+    <div class="severity-scale">
+      <div class="sev-label">Scenario severity spectrum</div>
+      <div class="sev-track">
+        <div class="sev-seg low">LOW</div>
+        <div class="sev-seg medium">MEDIUM</div>
+        <div class="sev-seg high">HIGH</div>
+        <div class="sev-seg critical">CRITICAL</div>
+      </div>
+      <div class="sev-prompts">
+        <div class="sev-pin" style="text-align:left">📡 Sensors (5)</div>
+        <div class="sev-pin">🔧 Equipment (3)</div>
+        <div class="sev-pin">🌪️ Coagulant (2)</div>
+        <div class="sev-pin">💧 Fluoride (4)</div>
+        <div class="sev-pin" style="text-align:right">⚡ Chlorine (1)</div>
+      </div>
+    </div>
+
+    <div class="prompts-list" style="margin-top:0.75rem">
+      <div class="prompt-row">
+        <div class="pr-num">1</div>
+        <div class="pr-body"><div class="pr-cat">⚡ Critical Chemical Disruption</div><div class="pr-text">Supplier SUP-001 (Liquid Chlorine) has had a factory fire that shut down their primary production line. They will be delayed 14 days. What should we do?</div></div>
+        <button class="pr-copy" data-text="Supplier SUP-001 (Liquid Chlorine) has had a factory fire that shut down their primary production line. They will be delayed 14 days. What should we do?">Copy</button>
+      </div>
+      <div class="prompt-row">
+        <div class="pr-num">2</div>
+        <div class="pr-body"><div class="pr-cat">🌪️ Coagulant Supply Risk</div><div class="pr-text">SUP-003 is experiencing a port strike affecting alum/coagulant shipments with a 7-day delay. Assess the impact on our water treatment process.</div></div>
+        <button class="pr-copy" data-text="SUP-003 is experiencing a port strike affecting alum/coagulant shipments with a 7-day delay. Assess the impact on our water treatment process.">Copy</button>
+      </div>
+      <div class="prompt-row">
+        <div class="pr-num">3</div>
+        <div class="pr-body"><div class="pr-cat">🔧 Equipment Failure</div><div class="pr-text">Our pump and valve supplier SUP-004 has declared bankruptcy and cannot fulfill our upcoming orders. Expected disruption is 30 days. What are our alternatives?</div></div>
+        <button class="pr-copy" data-text="Our pump and valve supplier SUP-004 has declared bankruptcy and cannot fulfill our upcoming orders. Expected disruption is 30 days. What are our alternatives?">Copy</button>
+      </div>
+      <div class="prompt-row">
+        <div class="pr-num">4</div>
+        <div class="pr-body"><div class="pr-cat">💧 Fluoride Supply Delay</div><div class="pr-text">Sodium fluoride supplier SUP-002 has a 5-day delay due to raw material shortages. How critical is this and what immediate actions should I take?</div></div>
+        <button class="pr-copy" data-text="Sodium fluoride supplier SUP-002 has a 5-day delay due to raw material shortages. How critical is this and what immediate actions should I take?">Copy</button>
+      </div>
+      <div class="prompt-row">
+        <div class="pr-num">5</div>
+        <div class="pr-body"><div class="pr-cat">📡 Sensor Network Disruption</div><div class="pr-text">SUP-005 (meters/sensors) is facing a semiconductor shortage causing a 21-day shipment delay. We have 3 water quality monitoring stations due for sensor replacement. What's the risk?</div></div>
+        <button class="pr-copy" data-text="SUP-005 (meters/sensors) is facing a semiconductor shortage causing a 21-day shipment delay. We have 3 water quality monitoring stations due for sensor replacement. What's the risk?">Copy</button>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- 6. PROACTIVE ALERTS -->
+  <section id="proactive" style="margin-bottom:2.5rem">
+    <div class="eyebrow">Beyond Reactive — What AquaShield Could Warn You About Tomorrow</div>
+    <div class="section-title">Proactive Risk Intelligence</div>
+    <p style="font-size:0.83rem;color:var(--gray-70);margin-bottom:1rem;">AquaShield doesn't just respond to disruptions — it can identify vulnerabilities <em>before</em> they become crises.</p>
+    <div class="proactive-grid">
+      <div class="proactive-alert warn">
+        <div class="pa-icon">⚠️</div>
+        <div class="pa-body">
+          <div class="pa-title">SUP-001 ChlorChem Industries — Q4 Logistics Risk</div>
+          <div class="pa-detail">Current stock: 18 days. Q4 logistics peak season starts in 6 weeks. Historical record shows this supplier disrupted twice in the past year — both in Q4. <strong>Recommended: place a buffer order now to build stock to 30 days before October.</strong></div>
+        </div>
+      </div>
+      <div class="proactive-alert warn">
+        <div class="pa-icon">⚠️</div>
+        <div class="pa-body">
+          <div class="pa-title">SUP-004 HydroMech Equipment — No Backup Supplier on File</div>
+          <div class="pa-detail">21-day lead time, no vetted backup supplier registered. A single supply disruption exceeding 45 days would halt planned pump replacements at Plant C. <strong>Recommended: qualify at least one alternative mechanical equipment supplier in the next 30 days.</strong></div>
+        </div>
+      </div>
+      <div class="proactive-alert info">
+        <div class="pa-icon">💡</div>
+        <div class="pa-body">
+          <div class="pa-title">SUP-002 FluorTech Supply — Reliability Leader</div>
+          <div class="pa-detail">Reliability score 4.5/5 with zero recorded disruptions in the past 12 months. 22 days stock buffer well above 7-day lead time. <strong>Recommend as model for supplier performance benchmarking.</strong></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- 7. TECH STACK -->
+  <section id="stack">
+    <div class="eyebrow">Technology Stack</div>
+    <div class="section-title">Built with IBM Bob — AI Building AI</div>
+    <p style="font-size:0.83rem;color:var(--gray-70);margin-bottom:1rem;">Bob wrote every file in this repo, connected watsonx Orchestrate via MCP from VS Code, and deployed to IBM Code Engine — all through natural language. <strong>This entire agent was built in under 8 hours using IBM Bob as the primary tool.</strong></p>
+    <div class="tech-wrap">
+      <span class="chip bob" style="font-size:0.8rem;padding:6px 16px">🤖 IBM Bob v2.0.3</span>
+      <span class="chip blue">watsonx Orchestrate</span>
+      <span class="chip blue">watsonx.ai</span>
+      <span class="chip teal">IBM Code Engine</span>
+      <span class="chip teal">watsonx ADK 2.15</span>
+      <span class="chip plain">IBM Granite LLM</span>
+      <span class="chip plain">Python 3.11</span>
+      <span class="chip plain">Flask + flask-cors</span>
+      <span class="chip plain">OpenAPI 3.0</span>
+      <span class="chip plain">Docker</span>
+    </div>
+  </section>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div><strong>AquaShield</strong> · Built with <strong>IBM Bob v2.0.3</strong> · IBM TechXchange 2026 Hackathon</div>
+  <div style="display:flex;gap:1.5rem">
+    <a href="#architecture">Architecture</a>
+    <a href="#capabilities">Capabilities</a>
+    <a href="#suppliers">Risk Dashboard</a>
+    <a href="#prompts">Try Prompts</a>
+    <a href="#proactive">Proactive Alerts</a>
+    <a href="https://youtu.be/ConS4-98Saw" target="_blank">▶ Demo Video</a>
+    <a href="https://github.com/vijay7770/aquashield-agent" target="_blank">GitHub</a>
+  </div>
+</footer>
+
+<!-- COPY BUTTONS -->
+<script>
+  document.querySelectorAll('.pr-copy').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var text = btn.getAttribute('data-text');
+      (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
+        .catch(function() {
+          var el = document.createElement('textarea');
+          el.value = text; document.body.appendChild(el); el.select();
+          document.execCommand('copy'); document.body.removeChild(el);
+        })
+        .finally(function() {
+          btn.textContent = '✓ Copied'; btn.classList.add('ok');
+          setTimeout(function() { btn.textContent = 'Copy'; btn.classList.remove('ok'); }, 2000);
+        });
+    });
+  });
+</script>
+
+<!-- NAV SCROLL SPY -->
+<script>
+(function() {
+  var ids = ['problem-solution','architecture','capabilities','suppliers','prompts','proactive','stack'];
+  var links = {};
+  ids.forEach(function(id) {
+    var a = document.querySelector('.section-nav a[href="#' + id + '"]');
+    if (a) links[id] = a;
+  });
+  if (!('IntersectionObserver' in window)) return;
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        Object.values(links).forEach(function(a) { a.classList.remove('active'); });
+        if (links[e.target.id]) links[e.target.id].classList.add('active');
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px', threshold: 0 });
+  ids.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el) observer.observe(el);
+  });
+})();
+</script>
+
+<!-- STATUS BAR + SUPPLIER RISK TABLE -->
+<script>
+(function() {
+  var BASE = 'https://aquashield-agent.2e2mqn500xa7.us-south.codeengine.appdomain.cloud';
+
+  function setDot(id, cls) {
+    var d = document.getElementById(id);
+    if (d) { d.className = 'dot ' + cls; }
+  }
+  function setText(id, html) {
+    var el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  }
+
+  // ── Status bar ──────────────────────────────────────────────────────
+  fetch(BASE + '/api/status', { cache: 'no-store' })
+    .then(function(r) { return r.json(); })
+    .then(function(d) {
+      setDot('dot-api', 'dot-green');
+      setText('lbl-api', '✅ API Online');
+      setDot('dot-sup', 'dot-green');
+      setText('lbl-sup', '<strong>' + d.suppliers_loaded + '</strong> suppliers loaded');
+      setDot('dot-ord', 'dot-green');
+      setText('lbl-ord', '<strong>' + d.orders_tracked + '</strong> orders tracked');
+      setDot('dot-crit', d.critical_suppliers > 0 ? 'dot-amber' : 'dot-green');
+      setText('lbl-crit', '<strong>' + d.critical_suppliers + '</strong> critical suppliers');
+    })
+    .catch(function() {
+      setDot('dot-api', 'dot-red');
+      setText('lbl-api', '❌ API Offline');
+    });
+
+  // ── Supplier risk table ─────────────────────────────────────────────
+  fetch(BASE + '/api/suppliers', { cache: 'no-store' })
+    .then(function(r) { return r.json(); })
+    .then(function(suppliers) {
+      var tbody = document.getElementById('supplier-tbody');
+      if (!tbody) return;
+      var rows = suppliers.filter(function(s) { return !s.is_backup; }).map(function(s) {
+        var stock = s.current_stock_days || 0;
+        var lead  = s.lead_time_days || 1;
+        var maxBar = 60;
+        var barPct = Math.min(stock / maxBar, 1) * 100;
+        var danger = stock <= lead;
+        var warning = !danger && stock < lead * 1.5;
+        var barCls = danger ? 'danger' : (warning ? 'warning' : 'ok');
+        var riskLevel = danger ? 'critical' : (warning ? 'high' : (s.reliability_score < 4.0 ? 'medium' : 'low'));
+        var riskLabel = danger ? '🔴 Critical' : (warning ? '🟠 High' : (s.reliability_score < 4.0 ? '🟡 Medium' : '🟢 Low'));
+        var stars = (s.reliability_score || 0).toFixed(1) + ' ★';
+        return '<tr>' +
+          '<td><strong>' + s.name + '</strong><br><span style="font-size:0.7rem;color:var(--gray-50)">' + s.id + '</span></td>' +
+          '<td>' + (s.chemical_type || s.category) + '</td>' +
+          '<td><div class="stock-bar-wrap"><div class="stock-bar-bg"><div class="stock-bar ' + barCls + '" style="width:' + barPct + '%"></div></div><span class="stock-days-label">' + (stock || 'N/A') + (stock ? ' days' : '') + (danger ? ' ⚠️' : '') + '</span></div></td>' +
+          '<td>' + lead + ' days</td>' +
+          '<td>' + stars + '</td>' +
+          '<td><span class="risk-badge ' + riskLevel + '">' + riskLabel + '</span></td>' +
+          '</tr>';
+      });
+      tbody.innerHTML = rows.join('');
+    })
+    .catch(function() {
+      var tbody = document.getElementById('supplier-tbody');
+      if (tbody) tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--gray-50);padding:1rem">Could not load supplier data — API may be offline.</td></tr>';
+    });
+})();
+</script>
+
+<!-- ORCHESTRATE FLOATING CHAT BUTTON -->
+<script>
+  window.wxOConfiguration = {
+    orchestrationID: "2bcdb66a9ca8421287bb1aebc427f875_9a8ea13a-7e49-4bd3-8ce8-103f60a842c9",
+    hostURL: "https://us-south.watson-orchestrate.cloud.ibm.com",
+    rootElementID: "root",
+    deploymentPlatform: "ibmcloud",
+    crn: "crn:v1:bluemix:public:watsonx-orchestrate:us-south:a/2bcdb66a9ca8421287bb1aebc427f875:9a8ea13a-7e49-4bd3-8ce8-103f60a842c9::",
+    chatOptions: {
+      agentId: "0364dc99-4730-4bcd-a69e-44616974cd24",
+      agentEnvironmentId: "612c1505-72ef-4b23-bfc0-6384dc326dc8",
+    }
+  };
+  setTimeout(function() {
+    var s = document.createElement('script');
+    s.src = window.wxOConfiguration.hostURL + '/wxochat/wxoLoader.js?embed=true';
+    s.addEventListener('load', function() { wxoLoader.init(); });
+    document.head.appendChild(s);
+  }, 0);
+</script>
+<!-- Orchestrate renders its own floating chat button in the bottom-right corner -->
+<div id="root"></div>
+
+</body>
+</html>
