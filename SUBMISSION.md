@@ -67,27 +67,29 @@ Every single component was built by IBM Bob in Agent mode, from a natural langua
 ---
 
 ## ✅ IBM Bob & watsonx Usage Statement
+*(paste this into the submission form)*
 
-IBM Bob was the primary development tool used to build every component of AquaShield. Specifically, Bob's **Agent mode** was used for all 56 tasks — no Plan mode, no manual coding sessions.
+---
 
-**Key Bob Agent mode patterns applied:**
+### 📋 SUBMISSION FORM TEXT (paste this)
 
-1. **Full-file generation from a single prompt** — `src/agent.py`, `src/watsonx_client.py`, and `src/app.py` were each produced by a single Bob task. Bob used its code editor tools (`write_file`, `apply_diff`) to create complete, working files from a natural-language description of the requirements.
+IBM Bob was the exclusive development tool for AquaShield — no code was written outside of Bob tasks. All 56 tasks used Agent mode.
 
-2. **MCP-based Orchestrate deployment** — Bob used the watsonx Orchestrate MCP server (connected to the live Orchestrate instance) to call `import_tool` and `create_or_update_agent` directly from the editor. The agent was deployed to Orchestrate without leaving VS Code or running a terminal command manually.
+Bob's Agent mode was applied in five specific ways throughout the build:
 
-3. **Iterative debugging in-task** — When the Code Engine container failed to start due to an incorrect port binding, Bob identified the issue (reading the error output), proposed the fix (updating `app.py` to read `PORT` from the environment), applied the `apply_diff`, and confirmed the fix — all within the same task.
+Full-file generation from a single prompt. src/agent.py, src/watsonx_client.py, and src/app.py were each produced by one Bob task. Bob used its write_file and apply_diff tools to create complete, working files from a natural-language description, including the IBM IAM token auth flow with 60-second cache margin, the watsonx.ai inference API calls to Granite, the criticality scoring algorithm, and all five Flask endpoints with CORS and error handling.
 
-4. **Multi-file scaffolding** — The initial project setup (folder structure, `.gitignore`, `.bobignore`, `.env.example`, `requirements.txt`, file skeletons) was created in a single task using Bob's file tools across multiple files simultaneously.
+MCP-based deployment without leaving the editor. Bob used the watsonx Orchestrate MCP server to call import_tool and create_or_update_agent directly from VS Code. The agent was registered, configured with starter prompts and a welcome message, and published to the Live environment — all through Bob Agent mode tasks, no manual Orchestrate UI interaction required.
 
-5. **Data generation with domain context** — Bob generated all three `data/*.json` files with realistic water utility domain content — supplier reliability scores, lead times, backup relationships, order criticality levels — requiring zero manual editing.
+Iterative debugging within a single task. When the IBM Code Engine container failed on startup due to an incorrect port binding, Bob read the error output, identified the fix (reading PORT from the environment variable rather than hardcoding 8080), applied the diff to app.py, and confirmed the resolution — without the task ending or the developer switching context.
 
-**IBM watsonx integration in the solution:**
+Multi-file scaffolding in one task. Project initialization — folder structure, .gitignore, .bobignore, .env.example, requirements.txt, and file skeletons — was completed in a single task with Bob's file tools operating across multiple files simultaneously.
 
-- **IBM watsonx.ai (ibm/granite-4-h-small)** is called by `src/watsonx_client.py` to generate two AI outputs per disruption: a 2–3 sentence risk assessment and a director-ready executive summary. The IAM token authentication flow (with 60-second-margin cache expiry) and the watsonx.ai inference REST API call were both written by Bob.
-- **IBM watsonx Orchestrate** hosts the deployed agent (`aquashield_agent`) with the `runDisruptionResponse` tool. The agent was deployed programmatically using the Orchestrate ADK and Bob's MCP integration.
+Data and documentation generation. All three data/*.json files (8 suppliers with backup graphs and reliability scores, 7 purchase orders, historical disruption records) were generated with domain-accurate content in one task. The README, OpenAPI spec, Dockerfile, .dockerignore, and YAML agent manifest were each produced as single Bob tasks.
 
-**Bobalytics data:** 56 tasks, 100% Agent mode. Full export available in [`docs/bobalytics_export_user_2026-07-31_2026-08-29/`](docs/bobalytics_export_user_2026-07-31_2026-08-29/).
+IBM watsonx.ai (ibm/granite-4-h-small) is integrated into the solution itself. For every disruption event, src/watsonx_client.py calls the Granite model twice — once for a 2–3 sentence risk assessment and once for a director-ready executive summary — using an IAM token auth flow that Bob implemented and a prompt structure Bob engineered. IBM watsonx Orchestrate hosts the deployed agent with the runDisruptionResponse tool and serves as the natural-language chat interface that procurement managers use.
+
+Bobalytics export: 56 tasks, 100% Agent mode, available in the repository under docs/bobalytics_export_user_2026-07-31_2026-08-29/.
 
 ---
 
