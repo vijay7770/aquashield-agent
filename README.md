@@ -84,8 +84,66 @@ Bob was not used to autocomplete lines of code — **Bob was the developer.** Ev
 | Bob tasks completed | **56** |
 | Bob mode | **100% Agent mode** |
 | Bob language contributions | YAML 75.95%, config/text 24.05% |
+| Build days | Aug 28–29, 2026 (peak: 7–8 tasks/day) |
+| MCP tool deploys from VS Code | **5** (no browser, no Orchestrate UI) |
+| Estimated developer time saved | **~12–15 hours** on an 8-hour project |
+| Session log | [`bob-sessions/bob-tasks-ibmhack-2026-08-30.md`](bob-sessions/bob-tasks-ibmhack-2026-08-30.md) |
 | Session screenshots | [`bob-sessions/`](bob-sessions/) |
 | Bobalytics export | [`docs/bobalytics_export_user_2026-07-31_2026-08-29/`](docs/bobalytics_export_user_2026-07-31_2026-08-29/) |
+
+---
+
+## 📋 Bob Session Highlights
+
+> Full session log with all 10 build sessions, prompts, and tool calls: [`bob-sessions/bob-tasks-ibmhack-2026-08-30.md`](bob-sessions/bob-tasks-ibmhack-2026-08-30.md)
+
+### What Bob wrote in a single Agent mode task each
+
+**Session 4 — `src/agent.py`** _(prompt: "Write the complete src/agent.py…")_
+- Criticality scoring algorithm (`CRITICAL`/`HIGH`/`MEDIUM`/`LOW`) based on stock days vs delay
+- EPA compliance health risk detection for chlorine/fluoride disruptions
+- Alternative supplier ranking by reliability score + stock availability
+- 4-step numbered action plan generator with deadlines
+- Full orchestration calling `WatsonXClient` for LLM enrichment
+
+**Session 5 — `src/watsonx_client.py`** _(prompt: "Write the complete src/watsonx_client.py…")_
+- IBM IAM `POST /identity/token` with 60-second token expiry safety margin
+- `generate_risk_assessment()` + `generate_executive_summary()` against `ibm/granite-4-h-small`
+- Offline `fallback_response()` — demo always runs even without watsonx.ai credentials
+
+**Session 7 — `src/app.py`** _(prompt: "Write the complete src/app.py Flask REST API…")_
+- 4 endpoints: `POST /api/disruption`, `GET /api/suppliers`, `GET /api/orders`, `GET /api/status`
+- Global CORS, structured `400`/`500` error responses, `PORT` env var binding for Code Engine
+
+**Session 8 — `Dockerfile`** _(prompt: "Write a Dockerfile for IBM Code Engine…")_
+- Bob built the image, hit a port-binding error in `docker build`, read the error output, identified `int(os.environ.get("PORT", 8080))` as the fix, and applied it — **all in the same task, no new prompt**
+
+### How Bob deployed to watsonx Orchestrate without a browser
+
+Bob used the **watsonx Orchestrate MCP server** directly from VS Code:
+
+```
+# Register the ADK tool
+mcp__watsonx-orchestrate-adk__import_tool(
+    path="aquashield-agent/tools/disruption_tool.py"
+)
+
+# Deploy the agent
+mcp__watsonx-orchestrate-adk__create_or_update_agent(
+    name="aquashield_agent",
+    llm="ibm/granite-3-1-8b-instruct",
+    kind="native",
+    style="react_core",
+    tools=["runDisruptionResponse"],
+    instructions="..."
+)
+
+# Verify
+mcp__watsonx-orchestrate-adk__list_agents()
+mcp__watsonx-orchestrate-adk__list_tools()
+```
+
+No browser. No Orchestrate UI. No manual YAML upload. Entire deployment triggered from natural language inside a Bob Agent mode task.
 
 ---
 
