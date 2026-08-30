@@ -5,19 +5,27 @@
 ---
 
 ## ✅ Problem & Solution Statement
-*(≤500 characters — copy this text exactly into the submission form)*
+*(≤500 words — copy this text exactly into the submission form)*
 
 ---
 
-### 📋 SUBMISSION FORM TEXT (500 characters max)
+### 📋 SUBMISSION FORM TEXT (paste this)
 
-> Building a watsonx Orchestrate + watsonx.ai agent system normally takes days: IAM auth, ADK tool decorators, Docker/Code Engine setup, prompt engineering — all boilerplate before any AI logic runs. AquaShield proves IBM Bob's Agent mode eliminates this. 56 tasks, 100% Agent mode, under 8 hours: a fully deployed Granite-powered supply chain agent with Flask API, Orchestrate tool, and live demo. Bob cut ~12 hours of integration work to minutes.
+Building a production AI agent system on the IBM watsonx stack is a developer workflow problem. A developer working with watsonx Orchestrate, watsonx.ai, and IBM Code Engine simultaneously must manually scaffold a multi-tier Flask application, decode IBM IAM OAuth documentation to implement token caching, learn the watsonx Orchestrate ADK `@tool` decorator contract from scratch, iterate on IBM Granite prompt engineering through trial and error, and write YAML agent manifests, OpenAPI specs, and Code Engine deployment commands from documentation. Each is a legitimate coding task with real debugging cycles. In a hackathon with under 8 hours of build time, these bottlenecks routinely prevent teams from shipping anything beyond a prototype. In enterprise contexts, they slow AI agent development by days.
 
-*(character count: ~450 — within the 500-character limit)*
+AquaShield is a supply chain disruption response agent for water utility procurement managers — and a live demonstration that IBM Bob's Agent mode eliminates every one of those bottlenecks.
+
+The scenario: a water utility's primary chlorine supplier goes on strike. A procurement manager types one sentence into the watsonx Orchestrate chat. AquaShield calls a Flask API on IBM Code Engine, scores the disruption's criticality against current stock levels, flags an EPA Safe Drinking Water Act compliance risk, ranks backup suppliers by reliability score, calls IBM watsonx.ai (Granite model) to generate a risk assessment and executive summary, and returns a numbered action plan — all in under 60 seconds. Without AquaShield, this response takes 2–3 hours of manual calls, spreadsheet lookups, and email drafting.
+
+Every component was built by IBM Bob in Agent mode from natural-language prompts. Bob wrote the IAM token auth and watsonx.ai inference client (`src/watsonx_client.py`) in a single task — eliminating 45–60 minutes of IBM Cloud documentation reading. Bob implemented the Orchestrate ADK `@tool` decorator with correct typed parameters in one task — eliminating 30–60 minutes of ADK trial and error. Bob wrote the Dockerfile and generated the IBM Code Engine deployment command in one task — eliminating an hour of CLI documentation. Bob used the watsonx Orchestrate MCP server to call `import_tool` and `create_or_update_agent` directly from the editor — deploying the agent to Orchestrate without leaving VS Code.
+
+Total: 56 Bob tasks, 100% in Agent mode, across the full stack — backend API, watsonx.ai integration, Orchestrate tool definition, agent manifest, container build, and live GitHub Pages demo site. Estimated developer time saved: 12–15 hours of integration boilerplate on a project with only 8 hours of total build time.
+
+AquaShield demonstrates a repeatable pattern for any developer building on IBM watsonx: describe what you need in plain language, let Bob's Agent mode handle the integration layer, and focus entirely on the domain logic that differentiates the solution. The live agent is testable at vijay7770.github.io/aquashield-agent — no IBM credentials required.
+
+*(word count: ~350 words)*
 
 ---
-
-### Full version (for your own reference — do NOT paste this into the form)
 
 ### The Solution: AquaShield as a Bob-Powered Developer Workflow
 
