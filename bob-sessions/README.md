@@ -14,6 +14,21 @@ Each screenshot was taken from the Bob Task Session Summary panel in VS Code (ac
 | Mode used | **100% Agent mode** |
 | Build period | Aug 28–29, 2026 |
 
+## Screenshots
+
+| Screenshot | What It Shows |
+|---|---|
+| ![bob-build](bob-build.png) | **Project scaffold** — Bob's Todo List 9/9, all 9 files created in one task (8 files changed) |
+| ![bob-data](bob-data.png) | **Data generation** — `data/suppliers.json` with all 8 suppliers, backup substitution logic, reliability scores |
+| ![bob-agentbuild](bob-agentbuild.png) | **`src/agent.py`** — 6-method `SupplyChainAgent` class with criticality scoring, alternative matching, action plan |
+| ![bob-watsonxai](bob-watsonxai.png) | **`src/watsonx_client.py`** — IAM token caching, `generate_risk_assessment()`, `generate_executive_summary()`, offline fallback |
+| ![bob-flask](bob-flask.png) | **`src/app.py`** — 111-line Flask REST API, 5 routes summarised, syntax-verified by Bob |
+| ![bob-docker](bob-docker.png) | **Dockerfile + Code Engine deploy** — live URL produced, Bob caught and fixed a port-binding error in the same task |
+| ![bob-ADK](bob-ADK.png) | **watsonx Orchestrate ADK** — Bob configured `mcp.json`, guided MCP connection, deployed tool and agent from VS Code |
+| ![bob-adk-troubleshooting](bob-adk-troubleshooting.png) | **ADK troubleshooting** — Bob diagnosed `mcsp_v2` auth, found instance URL, activated environment via CLI |
+
+---
+
 ## Bob Tasks Documented
 
 The 56 Agent mode tasks covered:
