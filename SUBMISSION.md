@@ -5,25 +5,19 @@
 ---
 
 ## ✅ Problem & Solution Statement
-*(Reframed for hackathon theme: developer workflow)*
+*(≤500 characters — copy this text exactly into the submission form)*
 
 ---
 
-### The Developer Workflow Problem
+### 📋 SUBMISSION FORM TEXT (500 characters max)
 
-Building a production AI agent system is a developer workflow bottleneck that compounds with every integration layer added. For a developer working with IBM watsonx Orchestrate, watsonx.ai, and IBM Code Engine simultaneously, the typical workflow involves:
+> Building a watsonx Orchestrate + watsonx.ai agent system normally takes days: IAM auth, ADK tool decorators, Docker/Code Engine setup, prompt engineering — all boilerplate before any AI logic runs. AquaShield proves IBM Bob's Agent mode eliminates this. 56 tasks, 100% Agent mode, under 8 hours: a fully deployed Granite-powered supply chain agent with Flask API, Orchestrate tool, and live demo. Bob cut ~12 hours of integration work to minutes.
 
-- Manually scaffolding a multi-tier application (Flask backend, Docker container, REST API endpoints) before any AI logic can be tested
-- Decoding IBM IAM OAuth documentation to implement token caching correctly
-- Learning the watsonx Orchestrate ADK `@tool` decorator contract — including typed parameter requirements for JSON schema derivation — from scratch for each project
-- Iterating on prompt engineering for IBM Granite models through trial and error
-- Writing YAML agent manifests, OpenAPI specs, and deployment CLI commands from memory or documentation
-
-Each of these is a legitimate coding task with real debugging cycles. In a hackathon context with under 8 hours of build time, these bottlenecks routinely prevent teams from building anything beyond a prototype. In an enterprise context, they slow AI agent development by days.
-
-**The hypothesis:** If IBM Bob's Agent mode can handle the integration boilerplate, developers can spend 100% of their time on the domain logic that makes the solution valuable.
+*(character count: ~450 — within the 500-character limit)*
 
 ---
+
+### Full version (for your own reference — do NOT paste this into the form)
 
 ### The Solution: AquaShield as a Bob-Powered Developer Workflow
 
